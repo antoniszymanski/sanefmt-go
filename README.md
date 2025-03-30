@@ -4,7 +4,7 @@ JavaScript/TypeScript code formatter written in Go, using [sanefmt](https://gith
 
 Documentation: https://pkg.go.dev/github.com/antoniszymanski/sanefmt-go
 
-Install:
+### Installation:
 
 ```
 go get github.com/antoniszymanski/sanefmt-go
