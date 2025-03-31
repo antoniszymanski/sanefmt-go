@@ -39,10 +39,11 @@ func Format(r io.Reader) (*bytes.Buffer, error) {
 		WithStdout(&stdout).
 		WithStderr(&stderr).
 		WithArgs("sane-fmt", "--stdio")
-	_, err := rt.InstantiateModule(ctx, compiled, config)
+	m, err := rt.InstantiateModule(ctx, compiled, config)
 	if err != nil {
 		return nil, errors.New(stderr.String())
 	}
+	defer m.Close(ctx)
 
 	return &stdout, nil
 }
