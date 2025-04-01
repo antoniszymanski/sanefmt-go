@@ -43,7 +43,7 @@ func Format(r io.Reader) (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New(stderr.String())
 	}
-	defer m.Close(ctx)
+	defer m.Close(ctx) //nolint:errcheck
 
 	return &stdout, nil
 }
