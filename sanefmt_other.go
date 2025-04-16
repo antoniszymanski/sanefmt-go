@@ -42,7 +42,8 @@ var (
 func format(r io.Reader) (*bytes.Buffer, error) {
 	initRuntime()
 
-	var stdout, stderr bytes.Buffer
+	var stdout bytes.Buffer
+	var stderr strings.Builder
 	config := wazero.NewModuleConfig().
 		WithStdin(r).
 		WithStdout(&stdout).
@@ -60,7 +61,7 @@ func format(r io.Reader) (*bytes.Buffer, error) {
 func version() (string, error) {
 	initRuntime()
 
-	var stdout, stderr bytes.Buffer
+	var stdout, stderr strings.Builder
 	config := wazero.NewModuleConfig().
 		WithStdout(&stdout).
 		WithStderr(&stderr).

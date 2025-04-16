@@ -22,7 +22,8 @@ import (
 var exe []byte
 
 func format(r io.Reader) (*bytes.Buffer, error) {
-	var stdout, stderr bytes.Buffer
+	var stdout bytes.Buffer
+	var stderr strings.Builder
 	cmd := exec.Command(exe, "--stdio")
 	cmd.Stdin = r
 	cmd.Stdout = &stdout
@@ -35,7 +36,7 @@ func format(r io.Reader) (*bytes.Buffer, error) {
 }
 
 func version() (string, error) {
-	var stdout, stderr bytes.Buffer
+	var stdout, stderr strings.Builder
 	cmd := exec.Command(exe, "--version")
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
