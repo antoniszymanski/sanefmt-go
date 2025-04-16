@@ -13,6 +13,7 @@ import (
 	_ "embed"
 	"errors"
 	"io"
+	"strings"
 
 	"codeberg.org/msantos/embedexe/exec"
 )
@@ -31,4 +32,16 @@ func format(r io.Reader) (*bytes.Buffer, error) {
 	}
 
 	return &stdout, nil
+}
+
+func version() (string, error) {
+	var stdout, stderr bytes.Buffer
+	cmd := exec.Command(exe, "--version")
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		return "", errors.New(stderr.String())
+	}
+
+	return strings.TrimSpace(stdout.String()), nil
 }

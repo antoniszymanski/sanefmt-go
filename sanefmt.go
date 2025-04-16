@@ -14,3 +14,7 @@ import (
 func Format(r io.Reader) (*bytes.Buffer, error) {
 	return format(r)
 }
+
+func Version() (string, error) {
+	return version()
+}

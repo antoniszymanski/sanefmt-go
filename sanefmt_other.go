@@ -14,6 +14,7 @@ import (
 	_ "embed"
 	"errors"
 	"io"
+	"strings"
 	"sync"
 
 	"github.com/tetratelabs/wazero"
@@ -54,4 +55,21 @@ func format(r io.Reader) (*bytes.Buffer, error) {
 	defer m.Close(ctx) //nolint:errcheck
 
 	return &stdout, nil
+}
+
+func version() (string, error) {
+	initRuntime()
+
+	var stdout, stderr bytes.Buffer
+	config := wazero.NewModuleConfig().
+		WithStdout(&stdout).
+		WithStderr(&stderr).
+		WithArgs("sane-fmt", "--version")
+	m, err := rt.InstantiateModule(ctx, compiled, config)
+	if err != nil {
+		return "", errors.New(stderr.String())
+	}
+	defer m.Close(ctx) //nolint:errcheck
+
+	return strings.TrimSpace(stdout.String()), nil
 }
