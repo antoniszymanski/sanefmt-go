@@ -39,7 +39,7 @@ var (
 	})
 )
 
-func format(r io.Reader) (*bytes.Buffer, error) {
+func format(r io.Reader) ([]byte, error) {
 	initRuntime()
 
 	var stdout bytes.Buffer
@@ -55,7 +55,7 @@ func format(r io.Reader) (*bytes.Buffer, error) {
 	}
 	defer m.Close(ctx) //nolint:errcheck
 
-	return &stdout, nil
+	return stdout.Bytes(), nil
 }
 
 func version() (string, error) {

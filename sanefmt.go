@@ -6,12 +6,9 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 package sanefmt
 
-import (
-	"bytes"
-	"io"
-)
+import "io"
 
-func Format(r io.Reader) (*bytes.Buffer, error) {
+func Format(r io.Reader) ([]byte, error) {
 	return format(r)
 }
 
