@@ -18,7 +18,7 @@ import (
 	"sync"
 
 	"github.com/tetratelabs/wazero"
-	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
+	wasip1 "github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
 
 //go:embed resources/sane-fmt-wasm32-wasi.wasm
@@ -30,8 +30,10 @@ var (
 	compiled    wazero.CompiledModule
 	initRuntime = sync.OnceFunc(func() {
 		rt = wazero.NewRuntime(ctx)
-		wasi_snapshot_preview1.MustInstantiate(ctx, rt)
 		var err error
+		if _, err = wasip1.Instantiate(ctx, rt); err != nil {
+			panic(err)
+		}
 		compiled, err = rt.CompileModule(ctx, binary)
 		if err != nil {
 			panic(err)
