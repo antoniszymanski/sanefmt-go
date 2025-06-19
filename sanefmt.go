@@ -8,10 +8,7 @@ package sanefmt
 
 import "io"
 
-func Format(r io.Reader) ([]byte, error) {
-	return format(r)
-}
-
-func Version() (string, error) {
-	return version()
-}
+var (
+	_ func(r io.Reader) ([]byte, error) = Format
+	_ func() (string, error)            = Version
+)

@@ -21,7 +21,7 @@ import (
 //go:embed resources/sane-fmt-x86_64-unknown-linux-musl
 var exe []byte
 
-func format(r io.Reader) ([]byte, error) {
+func Format(r io.Reader) ([]byte, error) {
 	var stdout bytes.Buffer
 	var stderr strings.Builder
 	cmd := exec.Command(exe, "--stdio")
@@ -35,7 +35,7 @@ func format(r io.Reader) ([]byte, error) {
 	return stdout.Bytes(), nil
 }
 
-func version() (string, error) {
+func Version() (string, error) {
 	var stdout, stderr strings.Builder
 	cmd := exec.Command(exe, "--version")
 	cmd.Stdout = &stdout
