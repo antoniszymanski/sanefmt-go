@@ -1,6 +1,6 @@
 ## sanefmt-go
 
-JavaScript/TypeScript code formatter written in Go, using [sanefmt](https://github.com/sane-fmt/sane-fmt) and [wazero](https://github.com/tetratelabs/wazero).
+Go bindings for [sanefmt](https://github.com/sane-fmt/sane-fmt), a code formatter for JavaScript/TypeScript.
 
 Documentation: https://pkg.go.dev/github.com/antoniszymanski/sanefmt-go
 
