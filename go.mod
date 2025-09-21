@@ -1,6 +1,6 @@
 module github.com/antoniszymanski/sanefmt-go
 
-go 1.24.4
+go 1.24.6
 
 require (
 	codeberg.org/msantos/embedexe v0.0.0-20250421111610-c1538c66a2a1
