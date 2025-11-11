@@ -4,7 +4,7 @@ go 1.24.6
 
 require (
 	codeberg.org/msantos/embedexe v0.0.0-20250421111610-c1538c66a2a1
-	github.com/tetratelabs/wazero v1.9.0
+	github.com/tetratelabs/wazero v1.10.1
 )
 
 require (
