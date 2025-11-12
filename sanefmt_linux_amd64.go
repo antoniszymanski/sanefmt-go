@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2025 Antoni Szymański
 // SPDX-License-Identifier: MPL-2.0
 
-//go:build linux && amd64
-
 package sanefmt
 
 import (
