@@ -38,7 +38,6 @@ func Format(r io.Reader) ([]byte, error) {
 	if initRuntime(); err != nil {
 		return nil, err
 	}
-
 	var stdout bytes.Buffer
 	var stderr strings.Builder
 	config := wazero.NewModuleConfig().
@@ -51,7 +50,6 @@ func Format(r io.Reader) ([]byte, error) {
 		return nil, errors.New(stderr.String())
 	}
 	defer module.Close(ctx) //nolint:errcheck
-
 	return stdout.Bytes(), nil
 }
 
@@ -59,7 +57,6 @@ func Version() (string, error) {
 	if initRuntime(); err != nil {
 		return "", err
 	}
-
 	var stdout, stderr strings.Builder
 	config := wazero.NewModuleConfig().
 		WithStdout(&stdout).
@@ -70,6 +67,5 @@ func Version() (string, error) {
 		return "", errors.New(stderr.String())
 	}
 	defer module.Close(ctx) //nolint:errcheck
-
 	return strings.TrimSpace(stdout.String()), nil
 }
