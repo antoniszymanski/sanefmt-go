@@ -6,7 +6,6 @@ package sanefmt
 import (
 	"bytes"
 	_ "embed"
-	"errors"
 	"io"
 	"strings"
 
@@ -24,7 +23,7 @@ func Format(r io.Reader) ([]byte, error) {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
-		return nil, errors.New(stderr.String())
+		return nil, newError(stderr.String())
 	}
 	return stdout.Bytes(), nil
 }
@@ -35,7 +34,7 @@ func Version() (string, error) {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
-		return "", errors.New(stderr.String())
+		return "", newError(stderr.String())
 	}
 	return strings.TrimSpace(stdout.String()), nil
 }

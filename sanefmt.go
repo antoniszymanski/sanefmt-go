@@ -3,9 +3,17 @@
 
 package sanefmt
 
-import "io"
+import (
+	"errors"
+	"io"
+	"strings"
+)
 
 var (
 	_ func(r io.Reader) ([]byte, error) = Format
 	_ func() (string, error)            = Version
 )
+
+func newError(s string) error {
+	return errors.New(strings.TrimSpace(s))
+}

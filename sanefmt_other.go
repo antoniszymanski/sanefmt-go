@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
-	"errors"
 	"io"
 	"strings"
 	"sync"
@@ -47,7 +46,7 @@ func Format(r io.Reader) ([]byte, error) {
 		WithArgs("sane-fmt", "--stdio")
 	module, err := runtime.InstantiateModule(ctx, compiled, config)
 	if err != nil {
-		return nil, errors.New(stderr.String())
+		return nil, newError(stderr.String())
 	}
 	defer module.Close(ctx) //nolint:errcheck
 	return stdout.Bytes(), nil
@@ -64,7 +63,7 @@ func Version() (string, error) {
 		WithArgs("sane-fmt", "--version")
 	module, err := runtime.InstantiateModule(ctx, compiled, config)
 	if err != nil {
-		return "", errors.New(stderr.String())
+		return "", newError(stderr.String())
 	}
 	defer module.Close(ctx) //nolint:errcheck
 	return strings.TrimSpace(stdout.String()), nil
