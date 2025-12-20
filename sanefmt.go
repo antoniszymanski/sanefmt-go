@@ -30,13 +30,13 @@ func parseStderr(s []byte, fallback error) error {
 	var err Error
 	var details []byte
 	s = bytes.TrimPrefix(s, []byte("ERROR:"))
-	first := true
+	isFirst := true
 	for line := range bytes.Lines(s) {
 		line = bytes.TrimSpace(line)
 		if len(line) == 0 {
 			continue
 		}
-		if first {
+		if isFirst {
 			const sep = "file:///STDIN.ts:"
 			if i := bytes.Index(line, []byte(sep)); i != -1 {
 				line = append(line[:i], line[i+len(sep):]...)
@@ -61,7 +61,7 @@ func parseStderr(s []byte, fallback error) error {
 			details = append(details, line...)
 			details = append(details, '\n')
 		}
-		first = false
+		isFirst = false
 	}
 	if err.Text == "" {
 		return fallback
