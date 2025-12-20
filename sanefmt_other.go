@@ -33,7 +33,7 @@ var (
 	})
 )
 
-func Format(r io.Reader) ([]byte, error) {
+func format(r io.Reader) ([]byte, error) {
 	if initRuntime(); err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func Format(r io.Reader) ([]byte, error) {
 	return stdout.Bytes(), nil
 }
 
-func Version() (string, error) {
+func version() (string, error) {
 	if initRuntime(); err != nil {
 		return "", err
 	}

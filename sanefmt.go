@@ -10,10 +10,13 @@ import (
 	"unicode/utf8"
 )
 
-var (
-	_ func(r io.Reader) ([]byte, error) = Format
-	_ func() (string, error)            = Version
-)
+func Format(r io.Reader) ([]byte, error) {
+	return format(r)
+}
+
+func Version() (string, error) {
+	return version()
+}
 
 type Error struct {
 	Text, Details string
