@@ -17,24 +17,25 @@ var exe []byte
 
 func Format(r io.Reader) ([]byte, error) {
 	var stdout bytes.Buffer
-	var stderr strings.Builder
+	var stderr buffer
 	cmd := exec.Command(exe, "--stdio")
 	cmd.Stdin = r
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
-		return nil, newError(stderr.String())
+		return nil, parseStderr(stderr, err)
 	}
 	return stdout.Bytes(), nil
 }
 
 func Version() (string, error) {
-	var stdout, stderr strings.Builder
+	var stdout strings.Builder
+	var stderr buffer
 	cmd := exec.Command(exe, "--version")
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
-		return "", newError(stderr.String())
+		return "", parseStderr(stderr, err)
 	}
 	return strings.TrimSpace(stdout.String()), nil
 }

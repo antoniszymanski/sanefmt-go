@@ -38,7 +38,7 @@ func Format(r io.Reader) ([]byte, error) {
 		return nil, err
 	}
 	var stdout bytes.Buffer
-	var stderr strings.Builder
+	var stderr buffer
 	config := wazero.NewModuleConfig().
 		WithStdin(r).
 		WithStdout(&stdout).
@@ -46,7 +46,7 @@ func Format(r io.Reader) ([]byte, error) {
 		WithArgs("sane-fmt", "--stdio")
 	module, err := runtime.InstantiateModule(ctx, compiled, config)
 	if err != nil {
-		return nil, newError(stderr.String())
+		return nil, parseStderr(stderr, err)
 	}
 	defer module.Close(ctx) //nolint:errcheck
 	return stdout.Bytes(), nil
@@ -56,14 +56,15 @@ func Version() (string, error) {
 	if initRuntime(); err != nil {
 		return "", err
 	}
-	var stdout, stderr strings.Builder
+	var stdout strings.Builder
+	var stderr buffer
 	config := wazero.NewModuleConfig().
 		WithStdout(&stdout).
 		WithStderr(&stderr).
 		WithArgs("sane-fmt", "--version")
 	module, err := runtime.InstantiateModule(ctx, compiled, config)
 	if err != nil {
-		return "", newError(stderr.String())
+		return "", parseStderr(stderr, err)
 	}
 	defer module.Close(ctx) //nolint:errcheck
 	return strings.TrimSpace(stdout.String()), nil
