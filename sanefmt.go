@@ -26,48 +26,61 @@ func (e Error) Error() string {
 	return e.Text
 }
 
-func parseStderr(s []byte, fallback error) error {
+func parseStderr(b []byte, fallback error) error {
 	var err Error
 	var details []byte
-	s = bytes.TrimPrefix(s, []byte("ERROR:"))
+	b = bytes.TrimPrefix(b, []byte("ERROR:"))
 	isFirst := true
-	for line := range bytes.Lines(s) {
+	for line := range bytes.Lines(b) {
 		line = bytes.TrimSpace(line)
 		if len(line) == 0 {
 			continue
 		}
-		if isFirst {
-			const sep = "file:///STDIN.ts:"
-			if i := bytes.Index(line, []byte(sep)); i != -1 {
-				line = append(line[:i], line[i+len(sep):]...)
-			}
-			original, originalSize := utf8.DecodeRune(line)
-			lower := unicode.ToLower(original)
-			lowerSize := utf8.RuneLen(lower)
-			switch {
-			case originalSize == lowerSize:
-				utf8.EncodeRune(line, lower)
-			case originalSize > lowerSize:
-				utf8.EncodeRune(line, lower)
-				line = append(line[:lowerSize], line[originalSize:]...)
-			default:
-				rest := line[originalSize:]
-				line = make([]byte, 0, lowerSize+len(rest))
-				line = utf8.AppendRune(line, lower)
-				line = append(line, rest...)
-			}
-			err.Text = string(line)
-		} else {
+		if !isFirst {
 			details = append(details, line...)
 			details = append(details, '\n')
+			continue
 		}
+		const sep = "file:///STDIN.ts:"
+		if i := bytes.Index(line, []byte(sep)); i != -1 {
+			line = append(line[:i], line[i+len(sep):]...)
+		}
+		if len(line) == 0 {
+			return fallback
+		}
+		line = replaceFirstRune(line, unicode.ToLower)
+		err.Text = string(line)
 		isFirst = false
-	}
-	if err.Text == "" {
-		return fallback
 	}
 	err.Details = string(bytes.TrimSuffix(details, []byte{'\n'}))
 	return &err
+}
+
+func replaceFirstRune(b []byte, fn func(rune) rune) []byte {
+	if len(b) == 0 {
+		return b
+	}
+	rune, size := utf8.DecodeRune(b)
+	mapped := fn(rune)
+	mappedSize := utf8.RuneLen(mapped)
+	if mappedSize == -1 {
+		mappedSize = len(string(utf8.RuneError))
+	}
+	switch {
+	case rune == mapped:
+		break
+	case size == mappedSize:
+		utf8.EncodeRune(b, mapped)
+	case size > mappedSize:
+		utf8.EncodeRune(b, mapped)
+		b = append(b[:mappedSize], b[size:]...)
+	default: // size < mappedSize
+		remaining := b[size:]
+		b = make([]byte, mappedSize+len(remaining))
+		utf8.EncodeRune(b, mapped)
+		copy(b[mappedSize:], remaining)
+	}
+	return b
 }
 
 type buffer []byte
