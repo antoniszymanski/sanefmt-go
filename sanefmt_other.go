@@ -6,7 +6,6 @@
 package sanefmt
 
 import (
-	"bytes"
 	"context"
 	_ "embed"
 	"io"
@@ -37,8 +36,7 @@ func format(r io.Reader) ([]byte, error) {
 	if initRuntime(); err != nil {
 		return nil, err
 	}
-	var stdout bytes.Buffer
-	var stderr buffer
+	var stdout, stderr buffer
 	config := wazero.NewModuleConfig().
 		WithStdin(r).
 		WithStdout(&stdout).
@@ -49,7 +47,7 @@ func format(r io.Reader) ([]byte, error) {
 		return nil, parseStderr(stderr, err)
 	}
 	defer module.Close(ctx) //nolint:errcheck
-	return stdout.Bytes(), nil
+	return stdout, nil
 }
 
 func version() (string, error) {

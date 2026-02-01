@@ -4,7 +4,6 @@
 package sanefmt
 
 import (
-	"bytes"
 	_ "embed"
 	"io"
 	"strings"
@@ -16,8 +15,7 @@ import (
 var exe []byte
 
 func format(r io.Reader) ([]byte, error) {
-	var stdout bytes.Buffer
-	var stderr buffer
+	var stdout, stderr buffer
 	cmd := exec.Command(exe, "--stdio")
 	cmd.Stdin = r
 	cmd.Stdout = &stdout
@@ -25,7 +23,7 @@ func format(r io.Reader) ([]byte, error) {
 	if err := cmd.Run(); err != nil {
 		return nil, parseStderr(stderr, err)
 	}
-	return stdout.Bytes(), nil
+	return stdout, nil
 }
 
 func version() (string, error) {
