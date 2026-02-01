@@ -6,6 +6,7 @@ package sanefmt
 import (
 	"bytes"
 	"io"
+	"math"
 	"unicode"
 	"unicode/utf8"
 )
@@ -28,31 +29,46 @@ func (e Error) Error() string {
 
 func parseStderr(b []byte, fallback error) error {
 	var err Error
-	var details []byte
-	b = bytes.TrimPrefix(b, []byte("ERROR:"))
+	var detailsLines [][]byte
+	minIndent := math.MaxInt
 	isFirst := true
+	b = bytes.TrimPrefix(b, []byte("ERROR:"))
 	for line := range bytes.Lines(b) {
-		line = bytes.TrimSpace(line)
-		if len(line) == 0 {
+		if isFirst {
+			line = bytes.TrimSpace(line)
+		} else {
+			line = bytes.TrimRightFunc(line, unicode.IsSpace)
+		}
+		switch {
+		case len(line) == 0:
 			continue
+		case isFirst:
+			const sep = "file:///STDIN.ts:"
+			if i := bytes.Index(line, []byte(sep)); i != -1 {
+				line = append(line[:i], line[i+len(sep):]...)
+			}
+			if len(line) == 0 {
+				return fallback
+			}
+			line = replaceFirstRune(line, unicode.ToLower)
+			err.Text = string(line)
+			isFirst = false
+		default:
+			for i := range line {
+				if line[i] == '\t' {
+					line[i] = ' '
+				}
+			}
+			minIndent = min(minIndent, bytes.IndexFunc(line, func(r rune) bool { return !unicode.IsSpace(r) }))
+			detailsLines = append(detailsLines, line)
 		}
-		if !isFirst {
-			details = append(details, line...)
-			details = append(details, '\n')
-			continue
-		}
-		const sep = "file:///STDIN.ts:"
-		if i := bytes.Index(line, []byte(sep)); i != -1 {
-			line = append(line[:i], line[i+len(sep):]...)
-		}
-		if len(line) == 0 {
-			return fallback
-		}
-		line = replaceFirstRune(line, unicode.ToLower)
-		err.Text = string(line)
-		isFirst = false
 	}
-	err.Details = string(bytes.TrimSuffix(details, []byte{'\n'}))
+	if minIndent != math.MaxInt {
+		for i := range detailsLines {
+			detailsLines[i] = detailsLines[i][minIndent:]
+		}
+	}
+	err.Details = string(bytes.Join(detailsLines, []byte("\n")))
 	return &err
 }
 
