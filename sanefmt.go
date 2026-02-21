@@ -9,6 +9,7 @@ import (
 	"math"
 	"unicode"
 	"unicode/utf8"
+	"unsafe"
 )
 
 func Format(r io.Reader) ([]byte, error) {
@@ -50,8 +51,7 @@ func parseStderr(b []byte, fallback error) error {
 			if len(line) == 0 {
 				return fallback
 			}
-			line = replaceFirstRune(line, unicode.ToLower)
-			err.Text = string(line)
+			err.Text = replaceFirstRune(line, unicode.ToLower)
 			isFirst = false
 		default:
 			for i := range line {
@@ -72,31 +72,21 @@ func parseStderr(b []byte, fallback error) error {
 	return &err
 }
 
-func replaceFirstRune(b []byte, fn func(rune) rune) []byte {
+func replaceFirstRune(b []byte, f func(rune) rune) string {
 	if len(b) == 0 {
-		return b
+		return ""
 	}
 	rune, size := utf8.DecodeRune(b)
-	mapped := fn(rune)
+	mapped := f(rune)
 	mappedSize := utf8.RuneLen(mapped)
 	if mappedSize == -1 {
 		mappedSize = len(string(utf8.RuneError))
 	}
-	switch {
-	case rune == mapped:
-		break
-	case size == mappedSize:
-		utf8.EncodeRune(b, mapped)
-	case size > mappedSize:
-		utf8.EncodeRune(b, mapped)
-		b = append(b[:mappedSize], b[size:]...)
-	default: // size < mappedSize
-		remaining := b[size:]
-		b = make([]byte, mappedSize+len(remaining))
-		utf8.EncodeRune(b, mapped)
-		copy(b[mappedSize:], remaining)
-	}
-	return b
+	remaining := b[size:]
+	out := make([]byte, 0, mappedSize+len(remaining))
+	out = utf8.AppendRune(out, mapped)
+	out = append(out, remaining...)
+	return unsafe.String(unsafe.SliceData(out), len(out))
 }
 
 type buffer []byte
