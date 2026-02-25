@@ -63,7 +63,7 @@ func parseStderr(b []byte, fallback error) error {
 			detailsLines = append(detailsLines, line)
 		}
 	}
-	if minIndent != math.MaxInt {
+	if 0 < minIndent && minIndent < math.MaxInt {
 		for i := range detailsLines {
 			detailsLines[i] = detailsLines[i][minIndent:]
 		}
