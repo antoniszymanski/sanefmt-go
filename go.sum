@@ -1,8 +1,8 @@
-codeberg.org/msantos/embedexe v0.0.0-20250421111610-c1538c66a2a1 h1:kNgh5czOvrBtHD81ir3HrleBumsuCdjTU6LOeZNBpG4=
-codeberg.org/msantos/embedexe v0.0.0-20250421111610-c1538c66a2a1/go.mod h1:ipqSRAomnausawEF799WqXRHS6GzorCo7MN//9DC9+0=
-codeberg.org/msantos/execve v0.0.0-20230206112018-e5c3a7f4d436 h1:JfctQYg/vUC3LpnjGeNTDI/JSenwfeshld2kUjjR2+0=
-codeberg.org/msantos/execve v0.0.0-20230206112018-e5c3a7f4d436/go.mod h1:mvAmIdjLHiBlHQXtcPhQycOi0QuCAbw8dxOXxk0gYaE=
+codeberg.org/msantos/embedexe v0.0.0-20260305123929-1e493bfc47b6 h1:O1L8FzdQjHdd4ov1SQMTkql6e3E52Q9auG6ccpOryX0=
+codeberg.org/msantos/embedexe v0.0.0-20260305123929-1e493bfc47b6/go.mod h1:qJjzXtdbTUmGEwzlqBaGkEf8Hv01zgcjsLdgzBY7D1Y=
+codeberg.org/msantos/execve v0.0.0-20260304121057-b54800594909 h1:DHEL9imuBsem608GZHq3aEl26w+8wV8z/5sic4U/EQU=
+codeberg.org/msantos/execve v0.0.0-20260304121057-b54800594909/go.mod h1:anSar/XoY88y7ikIgjmWcFmO/sGJ0lEQ141ERPl+8uo=
 github.com/tetratelabs/wazero v1.11.0 h1:+gKemEuKCTevU4d7ZTzlsvgd1uaToIDtlQlmNbwqYhA=
 github.com/tetratelabs/wazero v1.11.0/go.mod h1:eV28rsN8Q+xwjogd7f4/Pp4xFxO7uOGbLcD/LzB1wiU=
-golang.org/x/sys v0.38.0 h1:3yZWxaJjBmCWXqhN1qh02AkOnCQ1poK6oF+a7xWL6Gc=
-golang.org/x/sys v0.38.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
+golang.org/x/sys v0.41.0 h1:Ivj+2Cp/ylzLiEU89QhWblYnOE9zerudt9Ftecq2C6k=
+golang.org/x/sys v0.41.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
