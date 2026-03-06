@@ -3,7 +3,7 @@ module github.com/antoniszymanski/sanefmt-go
 go 1.24.6
 
 require (
-	codeberg.org/msantos/embedexe v0.0.0-20260305123929-1e493bfc47b6
+	codeberg.org/msantos/embedexe v0.0.0-20260306134118-4c0a21a1de6c
 	github.com/tetratelabs/wazero v1.11.0
 )
 
