@@ -1,5 +1,5 @@
-codeberg.org/msantos/embedexe v0.0.0-20260305123929-1e493bfc47b6 h1:O1L8FzdQjHdd4ov1SQMTkql6e3E52Q9auG6ccpOryX0=
-codeberg.org/msantos/embedexe v0.0.0-20260305123929-1e493bfc47b6/go.mod h1:qJjzXtdbTUmGEwzlqBaGkEf8Hv01zgcjsLdgzBY7D1Y=
+codeberg.org/msantos/embedexe v0.0.0-20260306134118-4c0a21a1de6c h1:Yr406cbH2TX3fDcG4DesqKLCXCKsZS70UJelJQ4V7Wo=
+codeberg.org/msantos/embedexe v0.0.0-20260306134118-4c0a21a1de6c/go.mod h1:qJjzXtdbTUmGEwzlqBaGkEf8Hv01zgcjsLdgzBY7D1Y=
 codeberg.org/msantos/execve v0.0.0-20260304121057-b54800594909 h1:DHEL9imuBsem608GZHq3aEl26w+8wV8z/5sic4U/EQU=
 codeberg.org/msantos/execve v0.0.0-20260304121057-b54800594909/go.mod h1:anSar/XoY88y7ikIgjmWcFmO/sGJ0lEQ141ERPl+8uo=
 github.com/tetratelabs/wazero v1.11.0 h1:+gKemEuKCTevU4d7ZTzlsvgd1uaToIDtlQlmNbwqYhA=
