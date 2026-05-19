@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+curl -fsSL https://github.com/sane-fmt/sane-fmt/releases/latest/download/sane-fmt-x86_64-unknown-linux-musl --remote-name
+curl -fsSL https://github.com/sane-fmt/sane-fmt/releases/latest/download/sane-fmt-wasm32-wasi.wasm --remote-name
+wasm-opt -O4 sane-fmt-wasm32-wasi.wasm -o sane-fmt-wasm32-wasi.wasm
+
+tag_name=$(curl -fsSL https://api.github.com/repos/sane-fmt/sane-fmt/releases/latest | jq -r .tag_name)
+tee VERSION <<EOF >/dev/null
+$tag_name
+https://github.com/sane-fmt/sane-fmt/releases/latest
+EOF
